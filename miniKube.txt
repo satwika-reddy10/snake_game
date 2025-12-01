@@ -1,0 +1,19 @@
+Docker: minikube start --driver=docker
+Verify Minikube is running:
+minikube status
+minikube start
+kubectl create deployment mynginx --image=nginx
+
+if already created then 
+
+kubectl set image deployment/myngnix nginx=nginx:latest
+
+2.Expose Deployment as a Service:
+Command: kubectl expose deployment mynginx --type=NodePort --port=80 --target-port=80
+Command:Scales the Nginx deployment to 4 replicas (pods).
+kubectl scale deployment mynginx --replicas=4
+
+Step 4: Access the Nginx App
+1.Using Port Forwarding:
+Command: kubectl port-forward svc/mynginx 8081:80
+Access the app via http://localhost:8081.

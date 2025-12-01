@@ -1,0 +1,16 @@
+Step 1: Pull the Nagios Docker Image
+•	Open a terminal and run:
+docker pull jasonrivers/nagios:latest
+Step 2: Run Nagios
+•	Command:
+docker run --name nagiosdemo -p 8888:80 jasonrivers/nagios:latest
+Step 3: Access Nagios Dashboard
+•	Open your browser and navigate to:
+http://localhost:8888
+o	Login Credentials:
+	Username: nagiosadmin
+	Password: nagios
+o	Once logged in, explore:
+	Hosts: View systems being monitored.
+	Services: Check tasks being monitored (e.g., CPU usage).
+	Alerts: Access recent notifications.

@@ -1,0 +1,226 @@
+II. Maven Web Automation Steps (Correct & Clean)
+🔹 Step 1: Open Jenkins
+
+Open URL: http://localhost:8085
+
+Click New Item (left menu)
+
+🔹 Step 2: Create Freestyle Job → MavenWeb_Build
+A. Basic Setup
+
+Item Name: MavenWeb_Build
+
+Select: Freestyle Project
+
+Click OK
+
+B. Configure
+
+Description:
+Web Build Demo
+
+Source Code Management → Git
+
+Repository URL:
+
+https://github.com/Akshaya34673/Maven_WebServer.git
+
+
+Branches to build:
+
+*/main
+
+
+Build Steps
+
+Add build step → Invoke top-level Maven targets
+
+Maven Version: MAVEN_HOME
+
+Goals:
+
+clean
+
+
+Add another build step → Invoke top-level Maven targets
+
+Maven Version: MAVEN_HOME
+
+Goals:
+
+install
+
+
+Post-build Actions
+
+Add → Archive the artifacts
+
+Files to archive:
+
+**/*
+
+
+Add → Build other projects
+
+Projects to build: MavenWeb_Test
+
+Trigger only if build is stable
+
+Apply → Save
+
+🔹 Step 3: Create Job → MavenWeb_Test
+A. Basic Setup
+
+Item Name: MavenWeb_Test
+
+Type: Freestyle → OK
+
+B. Configure
+
+Description:
+Test Demo
+
+Build Environment
+
+✔ Check: Delete workspace before build starts
+
+Build Steps
+
+Add build step → Copy artifacts from another project
+
+Project: MavenWeb_Build
+
+Build: Stable builds only
+
+Artifacts to copy:
+
+**/*
+
+
+Add build step → Invoke top-level Maven targets
+
+Maven Version: MAVEN_HOME
+
+Goals:
+
+test
+
+
+Post-build Actions
+
+Add → Archive the artifacts
+
+Files to archive:
+
+**/*
+
+
+Add → Build other projects
+
+Projects to build: MavenWeb_Deploy
+
+Apply → Save
+
+🔹 Step 4: Create Job → MavenWeb_Deploy
+A. Setup
+
+Item Name: MavenWeb_Deploy
+
+Type: Freestyle → OK
+
+B. Configure
+
+Description:
+Web Code Deployment
+
+Build Environment
+
+✔ Check: Delete workspace before build starts
+
+Build Steps
+
+Add → Copy artifacts from another project
+
+Project name: MavenWeb_Test
+
+Build: Stable build only
+
+Artifacts to copy:
+
+**/*
+
+
+Post-build Actions
+
+Add → Deploy WAR/EAR to a container
+
+WAR/EAR File:
+
+**/*.war
+
+
+Context Path:
+
+webpath
+
+
+Add Container → Tomcat 9.x Remote
+
+Credentials:
+
+Username: admin
+
+Password: 1234
+
+Tomcat URL:
+
+http://localhost:8080/
+
+
+Apply → Save
+
+🔹 Step 5: Create Pipeline View
+
+Go to Jenkins Dashboard
+
+Click + next to "All"
+
+Enter name: MavenWeb_Pipeline
+
+Select: Build Pipeline View
+
+Configure:
+
+Layout: Based on upstream/downstream
+
+Initial Job: MavenWeb_Build
+
+Apply → Save
+
+🔹 Step 6: Run the Pipeline
+
+Open MavenWeb_Pipeline
+
+Click RUN (green play icon)
+
+Click the black console box on each stage to view logs
+
+All successful jobs appear in green
+
+🔹 Step 7: Test Deployed Web App
+
+Open Tomcat Manager:
+
+http://localhost:8080/manager/html
+
+
+Scroll to Deployed Applications
+
+Find:
+
+/webpath
+
+
+Click it → Your Maven Web Application opens.
+
+✅ Your Setup is Now Fully Correct & Ready

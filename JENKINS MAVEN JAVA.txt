@@ -1,0 +1,95 @@
+JENKINS MAVEN JAVA
+
+http://localhost:8085
+
+Click "New Item" (left side menu)
+➤ Enter name:
+MavenJava_Build
+➤ Choose:
+✔ Freestyle Project
+Click OK
+
+In the Description box, type:
+Java Build demo
+
+In Source Code Management -> Select Git
+In Repository URL, paste:
+https://github.com/Akshaya34673/maven_jenkins.git
+
+Branch to build:
+*/main
+
+Build Steps
+Click:Add Build Step → Invoke top-level Maven targets
+First Maven Build Step:
+Maven Version: MAVEN_HOME
+Goals: clean
+
+Add another Build Step (Click Add Build Step again)
+Maven Version: MAVEN_HOME
+Goals: install
+
+Post-Build Actions
+➤ Add Post-Build Action → "Archive the artifacts"
+Files to archive: **/*
+
+➤ Add Post-Build Action → "Build other projects"
+Projects to build: MavenJava_Test
+Trigger: Only if build is stable
+
+✔ Click Apply
+✔ Click Save
+
+Create Second Job: MavenJava_Test
+
+➤ Click New Item
+Name: MavenJava_Test
+
+Choose:✔ Freestyle Project
+Click OK
+
+Description: Test demo
+
+4.2 Build Environment
+✔ Check: Delete the workspace before build starts
+
+4.3 Add Build Step → Copy artifacts from another project
+Project: MavenJava_Build
+Build: Stable build only
+Artifacts to copy: **/*
+
+4.4 Add Build Step → Invoke top-level Maven targets
+Maven Version: MAVEN_HOME
+Goals: test
+
+4.5 Post-build Actions
+
+✔ Add: Archive the artifacts → **/*
+✔ Apply
+✔ Save
+
+STEP 5 — Create Jenkins Pipeline View
+
+On main Jenkins dashboard:
+➤ Click the + sign next to “All”
+
+Name: MavenJava_Pipeline
+
+Scroll → select:
+✔ Build Pipeline View
+
+Click OK
+
+Pipeline Configuration
+Layout →
+Based on upstream/downstream relationship
+
+Initial Job:
+MavenJava_Build
+
+Click Apply → OK
+
+Now your pipeline will show:
+
+MavenJava_Build → MavenJava_Test
+
